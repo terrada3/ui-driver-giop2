@@ -1,5 +1,7 @@
-# ui-driver-skel
-Skeleton Rancher UI driver for custom docker-machine drivers
+# Rancher UI Driver for IIJ GIO P2
+Rancher UI driver for IIJ GIO P2 docker-machine drivers.
+
+https://www.iij.ad.jp/en/svcsol/service/p2/
 
 ## Setup
 
