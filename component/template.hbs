@@ -4,24 +4,123 @@
     {{partial "host/add-common"}}
 
     <div class="over-hr r-mt20 r-mb20">
-      <span>My Skeleton Driver</span>
+      <span>Account Info</span>
     </div>
 
-    {{!-- An example input option --}}
-    <div class="row">
-      <div class="col-sm-12 col-md-2 form-label">
-        <label class="form-control-static">Size</label>
+    <div class="row form-group">
+      <div class="col-md-2 form-label">
+        <label class="form-control-static">Access Key ID</label>
       </div>
-      <div class="col-sm-12 col-md-4">
-        <div class="input-group">
-          {{input type="text"
-            class="form-control"
-            value=model.%%DRIVERNAME%%Config.size
-          }}
-          <span class="input-group-addon">MB</span>
-        </div>
+      <div class="col-md-2">
+        {{input type="text"
+        class="form-control"
+        maxlength=20
+        value=model.%%DRIVERNAME%%Config.accessKey
+        }}
+        <p class="help-block">Access Key of IIJ GIO P2.</p>
+      </div>
+      <div class="col-md-2 col-md-offset-2 form-label">
+        <label class="form-control-static">Secret Key</label>
+      </div>
+      <div class="col-md-4">
+        {{input type="text" class="form-control" value=model.%%DRIVERNAME%%Config.secretKey }}
+        <p class="help-block">Secret Key of IIJ GIO P2.</p>
       </div>
     </div>
+
+    <div class="row form-group">
+      <div class="col-md-2 form-label">
+        <label class="form-control-static">Service Code(gis)</label>
+      </div>
+      <div class="col-md-2">
+        {{input type="text"
+        class="form-control"
+        maxlength=8
+        placeholder="gisXXXXXXXX"
+        value=model.%%DRIVERNAME%%Config.accessKey
+        }}
+        <p class="help-block">Service code of your IIJ GIO P2 contract.</p>
+      </div>
+    </div>
+
+    <div class="over-hr r-mt20 r-mb20">
+      <span>Server Instace</span>
+    </div>
+
+    <div class="row form-group">
+      <div class="col-md-2 form-label">
+        <label class="form-control-static">Server Type</label>
+      </div>
+      <div class="col-md-2">
+        {{input type="text"
+        class="form-control"
+        maxlength=20
+        value=model.%%DRIVERNAME%%Config.serverType
+        }}
+        <p class="help-block">GIO P2 Server Type (<a href="https://www.iij.ad.jp/biz/p2/public/spec.html"
+                                                     target="_blank">detail</a>)</p>
+      </div>
+      <div class="col-md-2 col-md-offset-2 form-label">
+        <label class="form-control-static">Server Group</label>
+      </div>
+      <div class="col-md-1">
+        {{input type="text"
+          class="form-control"
+          maxlength=1
+          value=model.%%DRIVERNAME%%Config.serverGroup }}
+        <p class="help-block">Specify "A" or "B". (<a href="http://manual.iij.jp/p2/pub/b-1-5.html"
+                                                      target="_blank">detail</a>)</p>
+      </div>
+    </div>
+
+    <div class="row form-group">
+
+      <div class="col-md-2 form-label">
+        <label class="form-control-static">System Storage Assignment Method</label>
+      </div>
+      <div class="col-md-4 form-label">
+        <select class="form-control" onchange={{action "storage_assign_method" value="target.value"}}>
+          <option value="new">Attach new system storage.</option>
+          <option value="restore">Restore from storage archive.</option>
+          <option value="assign">Attach existing system storage.</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row form-group">
+      <div class="col-md-2 form-label">
+        <label class="form-control-static">System Storage Image</label>
+      </div>
+      <div class="col-md-4">
+        {{input type="text"
+        class="form-control"
+        id="new_storage"
+        value=model.%%DRIVERNAME%%Config.systemStorage
+        }}
+        <p class="help-block">OS pre-installed boot image. Specify the
+          <a href="http://manual.iij.jp/p2/pubapi/59949023.html" target="_blank">type</a> of image. (
+          <a href="http://manual.iij.jp/p2/pub/b-3-2-1.html" target="_blank">detail</a>)</p>
+      </div>
+    </div>
+
+    <div class="row form-group">
+      <div class="col-md-2 form-label">
+        <label class="form-control-static">System Storage Service Code(iba)</label>
+      </div>
+      <div class="col-md-4">
+        {{input type="text"
+        class="form-control"
+        id="assign_storage"
+        value=model.%%DRIVERNAME%%Config.iba
+        disabled=iba_disable
+        }}
+        <p class="help-block">Attach already existing system storage.</p>
+      </div>
+    </div>
+
+
+
+
 
     {{!-- This partial contains the Labels and Advanced Options fields --}}
     {{partial "host/add-options"}}

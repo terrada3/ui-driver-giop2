@@ -35,6 +35,7 @@ gulp.task('server', ['build', 'watch'], function() {
   return gulpConnect.server({
     root: [DIST],
     port: process.env.PORT || 3000,
+    host: '0.0.0.0',
     https: false
   });
 });
