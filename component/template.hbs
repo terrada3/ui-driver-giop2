@@ -35,9 +35,9 @@
       <div class="col-md-2">
         {{input type="text"
         class="form-control"
-        maxlength=8
+        maxlength=11
         placeholder="gisXXXXXXXX"
-        value=model.%%DRIVERNAME%%Config.accessKey
+        value=model.%%DRIVERNAME%%Config.gisServiceCode
         }}
         <p class="help-block">Service code of your IIJ GIO P2 contract.</p>
       </div>
@@ -95,7 +95,8 @@
         {{input type="text"
         class="form-control"
         id="new_storage"
-        value=model.%%DRIVERNAME%%Config.systemStorage
+        value=model.%%DRIVERNAME%%Config.imageName
+        disabled=system_storage_disable
         }}
         <p class="help-block">OS pre-installed boot image. Specify the
           <a href="http://manual.iij.jp/p2/pubapi/59949023.html" target="_blank">type</a> of image. (
@@ -111,7 +112,7 @@
         {{input type="text"
         class="form-control"
         id="assign_storage"
-        value=model.%%DRIVERNAME%%Config.iba
+        value=model.%%DRIVERNAME%%Config.ibaServiceCode
         disabled=iba_disable
         }}
         <p class="help-block">Attach already existing system storage.</p>

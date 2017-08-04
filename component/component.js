@@ -10,19 +10,21 @@ define('ui/components/machine/driver-%%DRIVERNAME%%/component', ['exports', 'emb
     bootstrap: function () {
       let config = this.get('store').createRecord({
         type: '%%DRIVERNAME%%Config',
+        gisServiceCode: '',
         accessKey: '',
         secretKey: '',
-        dataStorage: '',
+        ivmServiceCode: '',
+        ibaServiceCode: '',
+        iPv4: '',
+        iPv6: '',
         dockerPort: 2376,
-        gis: '',
-        iba: '',
-        ibb: '',
-        ivm: '',
-        privateOnly: false,
-        serverGroup: '',
         serverType: 'VB0-1',
+        imageName: 'S30GB_CENTOS7_64',
         storageGroup: '',
-        systemStorage: 'S30GB_CENTOS7_64',
+        serverGroup: '',
+        ibbServiceCode: '',
+        addStorageType: '',
+        privateMode: 'false',
       });
 
       // let view_state = this.get('store').createRecord(
@@ -42,8 +44,26 @@ define('ui/components/machine/driver-%%DRIVERNAME%%/component', ['exports', 'emb
         '%%DRIVERNAME%%Config': config,
       }));
     },
+    getStatic() {
+      let url = 'https://storage-dag.iijgio.com/iij-rancher-ui/static.json';
 
-    iba_disable:'',
+      let proxyUrl = this.get('app.proxyEndpoint') + '/' + url;
+
+      console.debug('proxyUrl:' + proxyUrl);
+      return Ember.$.ajax(
+        {
+          url: proxyUrl,
+          method: 'GET',
+          dataType: 'json'
+        }).done(function (data) {
+          return data;
+        }
+      );
+    },
+    staticData: this.getStatic,
+    system_storage_disable: '',
+    iba_disable: 'disabled',
+    restore_image_disable: 'disabled',
 
     // Add custom validation beyond what can be done from the config API schema
     validate() {
@@ -71,17 +91,26 @@ define('ui/components/machine/driver-%%DRIVERNAME%%/component', ['exports', 'emb
     },
     actions: {
       storage_assign_method: function (value) {
-        switch(value){
+        switch (value) {
           case 'new':
+            this.set('system_storage_disable', '');
             this.set('iba_disable', 'disabled');
+            this.set('restore_image_disable', 'disabled');
+            break;
           case 'restore':
-            // view.$('#new_storage').prop('disables',true);
-            // view.$('#assign_storage').prop('disables',true);
+            this.set('system_storage_disable', 'disabled');
+            this.set('iba_disable', 'disabled');
+            this.set('restore_image_disable', '');
+            break;
           case 'assign':
+            this.set('system_storage_disable', 'disabled');
+            this.set('iba_disable', '');
+            this.set('restore_image_disable', 'disabled');
+            break;
         }
 
-        console.debug('fired!'+value);
+        console.debug('fired!' + value + this.getStatic());
       }
-    }
+    },
   });
 });
