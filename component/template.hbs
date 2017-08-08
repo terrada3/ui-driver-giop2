@@ -9,7 +9,22 @@
 
     <div class="row form-group">
       <div class="col-md-2 form-label">
-        <label class="form-control-static">Access Key ID</label>
+        <label class="form-control-static">Service Code(gis)*</label>
+      </div>
+      <div class="col-md-2">
+        {{input type="text"
+        class="form-control"
+        maxlength=11
+        placeholder="gisXXXXXXXX"
+        value=model.%%DRIVERNAME%%Config.gis
+        }}
+        <p class="help-block">Service Code of your IIJ GIO P2 contract.</p>
+      </div>
+    </div>
+
+    <div class="row form-group">
+      <div class="col-md-2 form-label">
+        <label class="form-control-static">Access Key ID*</label>
       </div>
       <div class="col-md-2">
         {{input type="text"
@@ -20,7 +35,7 @@
         <p class="help-block">Access Key of IIJ GIO P2.</p>
       </div>
       <div class="col-md-2 col-md-offset-2 form-label">
-        <label class="form-control-static">Secret Key</label>
+        <label class="form-control-static">Secret Key*</label>
       </div>
       <div class="col-md-4">
         {{input type="text" class="form-control" value=model.%%DRIVERNAME%%Config.secretKey }}
@@ -28,49 +43,64 @@
       </div>
     </div>
 
-    <div class="row form-group">
-      <div class="col-md-2 form-label">
-        <label class="form-control-static">Service Code(gis)</label>
-      </div>
-      <div class="col-md-2">
-        {{input type="text"
-        class="form-control"
-        maxlength=11
-        placeholder="gisXXXXXXXX"
-        value=model.%%DRIVERNAME%%Config.gisServiceCode
-        }}
-        <p class="help-block">Service code of your IIJ GIO P2 contract.</p>
-      </div>
-    </div>
-
     <div class="over-hr r-mt20 r-mb20">
-      <span>Server Instace</span>
+      <span>Server Instance</span>
     </div>
 
     <div class="row form-group">
       <div class="col-md-2 form-label">
         <label class="form-control-static">Server Type</label>
       </div>
-      <div class="col-md-2">
-        {{input type="text"
-        class="form-control"
-        maxlength=20
-        value=model.%%DRIVERNAME%%Config.serverType
-        }}
-        <p class="help-block">GIO P2 Server Type (<a href="https://www.iij.ad.jp/biz/p2/public/spec.html"
-                                                     target="_blank">detail</a>)</p>
+      <div class="col-md-3">
+        <select class="form-control" onchange={{action "selectServerType" value="target.value"}}>
+          {{#each model.static.serverType.types as |q|}}
+            <option class="form-control" value="{{q.value}}">{{q.label}}</option>
+          {{/each}}
+        </select>
+        <p class="help-block">GIO P2 Server Type. Price list is <a href="https://www.iij.ad.jp/biz/p2/public/spec.html"
+                                                                   target="_blank">here</a>.</p>
       </div>
-      <div class="col-md-2 col-md-offset-2 form-label">
+      <div class="col-md-2 col-md-offset-1 form-label">
         <label class="form-control-static">Server Group</label>
       </div>
-      <div class="col-md-1">
-        {{input type="text"
-          class="form-control"
-          maxlength=1
-          value=model.%%DRIVERNAME%%Config.serverGroup }}
-        <p class="help-block">Specify "A" or "B". (<a href="http://manual.iij.jp/p2/pub/b-1-5.html"
-                                                      target="_blank">detail</a>)</p>
+      <div class="col-md-4">
+        <select class="form-control"
+                onchange={{action "selectServerGroup" value="target.value"}}>
+
+          {{#each model.static.serverGroup.groups as |q|}}
+            <option class="form-control" value="{{q.value}}">{{q.label}}</option>
+          {{/each}}
+        </select>
+        <p class="help-block">Specify "A" or "B". If you do not specify this value, group is selected automatically. (<a
+          href="http://manual.iij.jp/p2/pub/b-1-5.html"
+          target="_blank">detail</a>)</p>
       </div>
+    </div>
+
+    <div class="over-hr r-mt20 r-mb20">
+      <span>Storage Group</span>
+    </div>
+
+    <div class="row form-group">
+      <div class="col-md-2 form-label">
+        <label class="form-control-static">Storage Group</label>
+      </div>
+      <div class="col-md-4">
+        <select class="form-control"
+                onchange={{action "selectStorageGroup" value="target.value"}}>
+
+          {{#each model.static.storageGroup.groups as |q|}}
+            <option class="form-control" value="{{q.value}}">{{q.label}}</option>
+          {{/each}}
+        </select>
+        <p class="help-block">Specify the Storage Group of System Storage and Data Storage. If you do not specify this
+          value, group is selected automatically. (
+          <a href="http://manual.iij.jp/p2/pub/b-3-4.html" target="_blank">detail</a>)</p>
+      </div>
+    </div>
+
+    <div class="over-hr r-mt20 r-mb20">
+      <span>System Storage</span>
     </div>
 
     <div class="row form-group">
@@ -79,10 +109,10 @@
         <label class="form-control-static">System Storage Assignment Method</label>
       </div>
       <div class="col-md-4 form-label">
-        <select class="form-control" onchange={{action "storage_assign_method" value="target.value"}}>
-          <option value="new">Attach new system storage.</option>
-          <option value="restore">Restore from storage archive.</option>
-          <option value="assign">Attach existing system storage.</option>
+        <select class="form-control" onchange={{action "selectStorageAttach" value="target.value"}}>
+          <option value="new">Attach new System Storage.</option>
+          <option value="restore">Restore from Storage Archive.</option>
+          <option value="assign">Attach existing System Storage.</option>
         </select>
       </div>
     </div>
@@ -92,17 +122,33 @@
         <label class="form-control-static">System Storage Image</label>
       </div>
       <div class="col-md-4">
-        {{input type="text"
-        class="form-control"
-        id="new_storage"
-        value=model.%%DRIVERNAME%%Config.imageName
-        disabled=system_storage_disable
-        }}
+        <select class="form-control"
+                onchange={{action "selectImageType" value="target.value"}} disabled={{systemStorageDisable}}
+                id="systemStorageSB">
+
+          {{#each model.static.systemStorageType.types as |q|}}
+            <option class="form-control" value="{{q.value}}">{{q.label}}</option>
+          {{/each}}
+        </select>
         <p class="help-block">OS pre-installed boot image. Specify the
           <a href="http://manual.iij.jp/p2/pubapi/59949023.html" target="_blank">type</a> of image. (
           <a href="http://manual.iij.jp/p2/pub/b-3-2-1.html" target="_blank">detail</a>)</p>
       </div>
+
+      <div class="col-md-2 form-label">
+        <label class="form-control-static">Storage Archive ID</label>
+      </div>
+      <div class="col-md-4">
+        {{input type="text"
+        class="form-control"
+        value=model.%%DRIVERNAME%%Config.restoreId
+        maxlength=8
+        disabled=restoreImageDisable
+        }}
+        <p class="help-block">Specify restore target of system archive.</p>
+      </div>
     </div>
+
 
     <div class="row form-group">
       <div class="col-md-2 form-label">
@@ -111,16 +157,90 @@
       <div class="col-md-4">
         {{input type="text"
         class="form-control"
-        id="assign_storage"
-        value=model.%%DRIVERNAME%%Config.ibaServiceCode
-        disabled=iba_disable
+        value=model.%%DRIVERNAME%%Config.iba
+        disabled=ibaDisable
+        maxlength=11
+        placeholder="ibaXXXXXXXX"
         }}
         <p class="help-block">Attach already existing system storage.</p>
       </div>
     </div>
 
+    <div class="over-hr r-mt20 r-mb20">
+      <span>Data Storage</span>
+    </div>
 
+    <div class="row form-group">
 
+      <div class="col-md-2 form-label">
+        <label class="form-control-static">Data Storage Assignment Method</label>
+      </div>
+      <div class="col-md-4 form-label">
+        <select class="form-control" onchange={{action "selectDataStorageAttach" value="target.value"}}>
+          <option value="new">Attach new Data Storage.</option>
+          <option value="assign">Attach existing Data storage.</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row form-group">
+      <div class="col-md-2 form-label">
+        <label class="form-control-static">Data Storage Type</label>
+      </div>
+      <div class="col-md-4">
+        <select class="form-control"
+                onchange={{action "selectDataStorageType" value="target.value"}}
+                  disabled ={{dataStorageDisable}}
+                id="dataStorageSB">>
+        {{#each model.static.dataStorageType.types as |q|}}
+          <option class="form-control" value="{{q.value}}">{{q.label}}</option>
+        {{/each}}
+        </select>
+        <p class="help-block">Specify the type of Data Storage.(
+          <a href="http://manual.iij.jp/p2/pub/b-3-2-2.html" target="_blank">detail</a>)
+        </p>
+      </div>
+      <div class="col-md-2 form-label">
+        <label class="form-control-static">Data Storage Service Code(ibb)</label>
+      </div>
+      <div class="col-md-4">
+        {{input type="text"
+        class="form-control"
+        value=model.%%DRIVERNAME%%Config.ibb
+        disabled=ibbDisable
+        maxlength=11
+        placeholder="ibbXXXXXXXX"
+        }}
+        <p class="help-block">Attach already existing data storage.</p>
+      </div>
+    </div>
+
+    <div class="over-hr r-mt20 r-mb20">
+      <span>Network</span>
+    </div>
+    <div class="row form-group">
+      <div class="col-md-2 form-label">
+        <label class="form-control-static">Private Mode</label>
+      </div>
+      <div class="col-md-4">
+        {{input type="text"
+        class="form-control"
+        value=model.%%DRIVERNAME%%Config.privateMode
+        maxlength=5
+        }}
+        <p class="help-block">Uses private network (does not attach global IP and setup default gateway and DNS.)"</p>
+      </div>
+      <div class="col-md-2 form-label">
+        <label class="form-control-static">Docker Port</label>
+      </div>
+      <div class="col-md-4">
+        {{input type="text"
+        class="form-control"
+        value=model.%%DRIVERNAME%%Config.dockerPort
+        maxlength=5
+        }}
+      </div>
+    </div>
 
 
     {{!-- This partial contains the Labels and Advanced Options fields --}}
