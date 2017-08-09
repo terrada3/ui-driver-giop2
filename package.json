@@ -1,15 +1,15 @@
 {
-  "name": "ui-driver-giop2",
+  "name": "p2pub",
   "version": "0.0.1",
   "description": "Rancher UI driver for IIJ GIO P2 custom docker-machine drivers",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/terrada3/ui-driver-giop2.git"
+    "url": "git+https://github.com/iij/ui-driver-giop2.git"
   },
   "author": "Internet Initiative Japan Inc.",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/terrada3/ui-driver-giop2/issues"
+    "url": "https://github.com/iij/ui-driver-giop2/issues"
   },
   "scripts": {
     "start": "./node_modules/.bin/gulp server",
