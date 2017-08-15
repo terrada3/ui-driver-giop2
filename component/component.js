@@ -465,7 +465,10 @@ define('ui/components/machine/driver-%%DRIVERNAME%%/component', ['exports', 'emb
         //System Dtorage
         imageName: '',//NEW SYSTEM Image
         iba: '', //Attach Already existing storage
-        restoreId: '',//Restore
+        customImage: '', //CustomeImgae ID(format iarXXXXX,nnnnn)
+        iar:'',
+        customImageId: '',
+        //restoreId: '',//Restore
 
         //Data Storage
         ibb: '',
@@ -502,7 +505,11 @@ define('ui/components/machine/driver-%%DRIVERNAME%%/component', ['exports', 'emb
       console.debug('storageGroup=' + this.get('model.%%DRIVERNAME%%Config.storageGroup'));
       console.debug('imageName=' + this.get('model.%%DRIVERNAME%%Config.imageName'));
       console.debug('iba=' + this.get('model.%%DRIVERNAME%%Config.iba'));
-      console.debug('restoreId=' + this.get('model.%%DRIVERNAME%%Config.restoreId'));
+
+      console.debug('customImage=' + this.get('model.%%DRIVERNAME%%Config.customImage'));
+      console.debug('iar=' + this.get('model.%%DRIVERNAME%%Config.iar'));
+      console.debug('customImageId=' + this.get('model.%%DRIVERNAME%%Config.customImageId'));
+
       console.debug('ibb=' + this.get('model.%%DRIVERNAME%%Config.ibb'));
       console.debug('dataStorage=' + this.get('model.%%DRIVERNAME%%Config.dataStorage'));
       console.debug('privateMode=' + this.get('model.%%DRIVERNAME%%Config.privateMode'));
@@ -529,15 +536,29 @@ define('ui/components/machine/driver-%%DRIVERNAME%%/component', ['exports', 'emb
       switch (systemStorageAssignMethod) {
         case 'new' :
           this.set('model.%%DRIVERNAME%%Config.iba', '');
-          this.set('model.%%DRIVERNAME%%Config.restoreId', '');
+          this.set('model.%%DRIVERNAME%%Config.customImage', '');
+          this.set('model.%%DRIVERNAME%%Config.iar', '');
+          this.set('model.%%DRIVERNAME%%Config.customImageId', '');
           break;
         case 'restore' :
-          if (!this.get('model.%%DRIVERNAME%%Config.restoreId')) {
-            errors.push('Storage Archive ID is required');
+          var chkError = false;
+          if (!this.get('model.%%DRIVERNAME%%Config.iar')) {
+            errors.push('Storage Archive Service Code is required');
+            chkError = true;
+          }
+          if (!this.get('model.%%DRIVERNAME%%Config.customImageId')) {
+            errors.push('Storage Archive Image ID is required');
+            chkError = true;
+          }
+          if(chkError) {
             break;
           }
           this.set('model.%%DRIVERNAME%%Config.iba', '');
           this.set('model.%%DRIVERNAME%%Config.imageName', '');
+          this.set('model.%%DRIVERNAME%%Config.customImage',
+            this.get('model.%%DRIVERNAME%%Config.iar')
+            + ","
+            +this.get('model.%%DRIVERNAME%%Config.customImageId'));
           this.$('#systemStorageSB').each(function () {
             this.selectedIndex = 0;
           });

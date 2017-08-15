@@ -134,23 +134,6 @@
           <a href="http://manual.iij.jp/p2/pubapi/59949023.html" target="_blank">type</a> of image. (
           <a href="http://manual.iij.jp/p2/pub/b-3-2-1.html" target="_blank">detail</a>)</p>
       </div>
-
-      <div class="col-md-2 form-label">
-        <label class="form-control-static">Storage Archive ID</label>
-      </div>
-      <div class="col-md-4">
-        {{input type="text"
-        class="form-control"
-        value=model.%%DRIVERNAME%%Config.restoreId
-        maxlength=8
-        disabled=restoreImageDisable
-        }}
-        <p class="help-block">Specify restore target of system archive.</p>
-      </div>
-    </div>
-
-
-    <div class="row form-group">
       <div class="col-md-2 form-label">
         <label class="form-control-static">System Storage Service Code(iba)</label>
       </div>
@@ -163,6 +146,35 @@
         placeholder="ibaXXXXXXXX"
         }}
         <p class="help-block">Attach already existing system storage.</p>
+      </div>
+    </div>
+
+
+    <div class="row form-group">
+      <div class="col-md-2 form-label">
+        <label class="form-control-static">Storage Archive Service Code</label>
+      </div>
+      <div class="col-md-4">
+        {{input type="text"
+        class="form-control"
+        value=model.%%DRIVERNAME%%Config.iar
+        maxlength=11
+        placeholder="iarXXXXXXXX"
+        disabled=restoreImageDisable
+        }}
+        <p class="help-block">Specify your system archive service code.</p>
+      </div>
+      <div class="col-md-2 form-label">
+        <label class="form-control-static">Storage Archive Image ID</label>
+      </div>
+      <div class="col-md-4">
+        {{input type="text"
+        class="form-control"
+        value=model.%%DRIVERNAME%%Config.customImageId
+        maxlength=8
+        disabled=restoreImageDisable
+        }}
+        <p class="help-block">Specify restore target of system archive image(ID).</p>
       </div>
     </div>
 
