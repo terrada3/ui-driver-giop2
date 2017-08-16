@@ -477,6 +477,9 @@ define('ui/components/machine/driver-%%DRIVERNAME%%/component', ['exports', 'emb
         //Network
         privateMode: 'false',
         dockerPort: 2376,
+
+        extraPorts: "500/udp,4500/udp",
+        replyAnyArp: true
       });
 
       let type = 'host';
@@ -494,27 +497,6 @@ define('ui/components/machine/driver-%%DRIVERNAME%%/component', ['exports', 'emb
       // Get generic API validation errors
       this._super();
       var errors = this.get('errors') || [];
-
-      //for debug
-      console.debug('gis=' + this.get('model.%%DRIVERNAME%%Config.gis'));
-      console.debug('accessKey=' + this.get('model.%%DRIVERNAME%%Config.accessKey'));
-      console.debug('secretKey=' + this.get('model.%%DRIVERNAME%%Config.secretKey'));
-      console.debug('serverType=' + this.get('model.%%DRIVERNAME%%Config.serverType'));
-      console.debug('serverGroup=' + this.get('model.%%DRIVERNAME%%Config.serverGroup'));
-      console.debug('ivm=' + this.get('model.%%DRIVERNAME%%Config.ivm'));
-      console.debug('storageGroup=' + this.get('model.%%DRIVERNAME%%Config.storageGroup'));
-      console.debug('imageName=' + this.get('model.%%DRIVERNAME%%Config.imageName'));
-      console.debug('iba=' + this.get('model.%%DRIVERNAME%%Config.iba'));
-
-      console.debug('customImage=' + this.get('model.%%DRIVERNAME%%Config.customImage'));
-      console.debug('iar=' + this.get('model.%%DRIVERNAME%%Config.iar'));
-      console.debug('customImageId=' + this.get('model.%%DRIVERNAME%%Config.customImageId'));
-
-      console.debug('ibb=' + this.get('model.%%DRIVERNAME%%Config.ibb'));
-      console.debug('dataStorage=' + this.get('model.%%DRIVERNAME%%Config.dataStorage'));
-      console.debug('privateMode=' + this.get('model.%%DRIVERNAME%%Config.privateMode'));
-      console.debug('iba=' + this.get('model.%%DRIVERNAME%%Config.iba'));
-      console.debug('dockerPort=' + this.get('model.%%DRIVERNAME%%Config.dockerPort'));
 
       // Add more specific errors
 
@@ -553,12 +535,13 @@ define('ui/components/machine/driver-%%DRIVERNAME%%/component', ['exports', 'emb
           if(chkError) {
             break;
           }
-          this.set('model.%%DRIVERNAME%%Config.iba', '');
-          this.set('model.%%DRIVERNAME%%Config.imageName', '');
           this.set('model.%%DRIVERNAME%%Config.customImage',
             this.get('model.%%DRIVERNAME%%Config.iar')
             + ","
             +this.get('model.%%DRIVERNAME%%Config.customImageId'));
+
+          this.set('model.%%DRIVERNAME%%Config.iba', '');
+          this.set('model.%%DRIVERNAME%%Config.imageName', '');
           this.$('#systemStorageSB').each(function () {
             this.selectedIndex = 0;
           });
@@ -569,7 +552,9 @@ define('ui/components/machine/driver-%%DRIVERNAME%%/component', ['exports', 'emb
             break;
           }
           this.set('model.%%DRIVERNAME%%Config.imageName', '');
-          this.set('model.%%DRIVERNAME%%Config.restoreId', '');
+          this.set('model.%%DRIVERNAME%%Config.customImage', '');
+          this.set('model.%%DRIVERNAME%%Config.iar', '');
+          this.set('model.%%DRIVERNAME%%Config.customImageId', '');
           this.$('#systemStorageSB').each(function () {
             this.selectedIndex = 0;
           });
@@ -593,6 +578,29 @@ define('ui/components/machine/driver-%%DRIVERNAME%%/component', ['exports', 'emb
           });
           break;
       }
+      //for debug
+      console.debug('gis=' + this.get('model.%%DRIVERNAME%%Config.gis'));
+      console.debug('accessKey=' + this.get('model.%%DRIVERNAME%%Config.accessKey'));
+      console.debug('secretKey=' + this.get('model.%%DRIVERNAME%%Config.secretKey'));
+      console.debug('serverType=' + this.get('model.%%DRIVERNAME%%Config.serverType'));
+      console.debug('serverGroup=' + this.get('model.%%DRIVERNAME%%Config.serverGroup'));
+      console.debug('ivm=' + this.get('model.%%DRIVERNAME%%Config.ivm'));
+      console.debug('storageGroup=' + this.get('model.%%DRIVERNAME%%Config.storageGroup'));
+      console.debug('imageName=' + this.get('model.%%DRIVERNAME%%Config.imageName'));
+      console.debug('iba=' + this.get('model.%%DRIVERNAME%%Config.iba'));
+
+      console.debug('customImage=' + this.get('model.%%DRIVERNAME%%Config.customImage'));
+      console.debug('iar=' + this.get('model.%%DRIVERNAME%%Config.iar'));
+      console.debug('customImageId=' + this.get('model.%%DRIVERNAME%%Config.customImageId'));
+
+      console.debug('ibb=' + this.get('model.%%DRIVERNAME%%Config.ibb'));
+      console.debug('dataStorage=' + this.get('model.%%DRIVERNAME%%Config.dataStorage'));
+      console.debug('privateMode=' + this.get('model.%%DRIVERNAME%%Config.privateMode'));
+      console.debug('iba=' + this.get('model.%%DRIVERNAME%%Config.iba'));
+      console.debug('dockerPort=' + this.get('model.%%DRIVERNAME%%Config.dockerPort'));
+
+      console.debug('extraPorts=' + this.get('model.%%DRIVERNAME%%Config.extraPorts'));
+      console.debug('replyAnyArp=' + this.get('model.%%DRIVERNAME%%Config.replyAnyArp'));
 
       // Check something and add an error entry if it fails:
       if (parseInt(this.get('model.%%DRIVERNAME%%Config.size'), 10) < 1024) {

@@ -132,7 +132,7 @@
         </select>
         <p class="help-block">OS pre-installed boot image. Specify the
           <a href="http://manual.iij.jp/p2/pubapi/59949023.html" target="_blank">type</a> of image. (
-          <a href="http://manual.iij.jp/p2/pub/b-3-2-1.html" target="_blank">detail</a>)</p>
+          <a href="http://manual.iij.jp/p2/pub/b-3-2-1.html" target="_blank">detail</a>). If not specified, apply default S30GB/Ubuntu14 : 64bit</p>
       </div>
       <div class="col-md-2 form-label">
         <label class="form-control-static">System Storage Service Code(iba)</label>
@@ -251,6 +251,19 @@
         value=model.%%DRIVERNAME%%Config.dockerPort
         maxlength=5
         }}
+      </div>
+    </div>
+
+    <div class="row form-group">
+      <div class="col-md-2 form-label">
+        <label class="form-control-static">Additional open ports</label>
+      </div>
+      <div class="col-md-4">
+        {{input type="text"
+        class="form-control"
+        value=model.%%DRIVERNAME%%Config.extraPorts
+        }}
+        <p class="help-block">Specify open ports. Format is "portNumber/protocol[udp/tcp],portNumber/protocol...." </p>
       </div>
     </div>
 
